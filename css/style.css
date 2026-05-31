@@ -508,3 +508,7 @@ footer .footer-credit a {
         margin: 0.25rem 0;
     }
 }
+.cert-link {
+    text-decoration: none;
+    color: inherit;
+}
