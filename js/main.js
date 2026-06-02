@@ -18,35 +18,63 @@ navItems.forEach(item => {
     });
 });
 
-// Google Sheets Form Target Configuration
-const quoteForm = document.forms['google-sheet-form'];
-const submitBtn = document.getElementById('submit-btn');
+// Dual Form Submission Logic (WhatsApp & Email)
+const quoteForm = document.getElementById('quote-form');
+const btnWhatsapp = document.getElementById('btn-whatsapp');
+const btnEmail = document.getElementById('btn-email');
 
-if (quoteForm) {
-    quoteForm.addEventListener('submit', function(e) {
-        e.preventDefault(); 
-        
-        const originalText = submitBtn.innerText;
-        submitBtn.innerText = "Submitting To Export Department...";
-        submitBtn.disabled = true;
-        
-        // Provide your Google Apps Script macro Web App URL here
-        const scriptURL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
-        const formData = new FormData(quoteForm);
+// Helper function to validate and extract form data
+function getFormData() {
+    if (!quoteForm.checkValidity()) {
+        quoteForm.reportValidity(); // Triggers browser's native "Please fill out this field" UI
+        return null;
+    }
+    
+    return {
+        name: quoteForm.elements['Name'].value.trim(),
+        email: quoteForm.elements['Email'].value.trim(),
+        company: quoteForm.elements['Company'].value.trim(),
+        requirements: quoteForm.elements['Requirements'].value.trim()
+    };
+}
 
-        fetch(scriptURL, { method: 'POST', body: formData })
-            .then(response => {
-                alert("Thank you. Your corporate requirement documentation has been filed. Our global export desk will get in touch with formal pricing sheets.");
-                quoteForm.reset();
-                submitBtn.innerText = originalText;
-                submitBtn.disabled = false;
-            })
-            .catch(error => {
-                console.error('Submission error:', error.message);
-                alert("Connection latency detected. Please verify documentation metrics or contact exim@spvexports.com directly.");
-                submitBtn.innerText = originalText;
-                submitBtn.disabled = false;
-            });
+// 1. WhatsApp Button Click Event
+if (btnWhatsapp) {
+    btnWhatsapp.addEventListener('click', function() {
+        const data = getFormData();
+        if (!data) return; // Stop if validation failed
+
+        const phoneNumber = "919384011239"; // Your WhatsApp number
+        const message = `*New Bulk Wholesale Inquiry*\n\n*Name:* ${data.name}\n*Email:* ${data.email}\n*Company & Target Country:* ${data.company}\n*Requirements:* ${data.requirements}`;
+        
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
     });
 }
 
+// 2. Email Button Click Event
+if (btnEmail) {
+    btnEmail.addEventListener('click', function() {
+        const data = getFormData();
+        if (!data) return; // Stop if validation failed
+
+        const targetEmail = "exim@spvexports.com"; // Your receiving email
+        const subject = `Bulk Wholesale Inquiry from ${data.name} (${data.company})`;
+        
+        // Build a plain-text body for web clients and a URL-encoded body for mailto
+        const bodyPlain = `New Bulk Wholesale Inquiry\n\nName: ${data.name}\nEmail: ${data.email}\nCompany & Target Country: ${data.company}\n\nRequirements:\n${data.requirements}`;
+
+        const mailtoBody = encodeURIComponent(bodyPlain);
+        const mailtoUrl = `mailto:${targetEmail}?subject=${encodeURIComponent(subject)}&body=${mailtoBody}`;
+
+        // Prefer opening Gmail web compose when on Windows; otherwise fallback to mailto
+        const isWindows = navigator.userAgent && navigator.userAgent.includes('Windows');
+        if (isWindows) {
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(targetEmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyPlain)}`;
+            window.open(gmailUrl, '_blank');
+        } else {
+            // This will launch the user's default email client (Outlook, Apple Mail, etc.)
+            window.location.href = mailtoUrl;
+        }
+    });
+}
