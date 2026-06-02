@@ -58,7 +58,7 @@ if (btnEmail) {
         const data = getFormData();
         if (!data) return; // Stop if validation failed
 
-        const targetEmail = "exim@spvexports.com"; // Your receiving email
+        const targetEmail = "teaseries1234@gmail.com"; // Your receiving email
         const subject = `Bulk Wholesale Inquiry from ${data.name} (${data.company})`;
         
         // Build a plain-text body for web clients and a URL-encoded body for mailto
