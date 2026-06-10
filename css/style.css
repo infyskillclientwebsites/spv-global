@@ -280,7 +280,7 @@ h1, h2, h3 {
 .hero {
     padding: 10rem 5%;
     background: linear-gradient(rgba(10, 15, 10, 0.3), rgba(0, 0, 0, 0.5)),
-                url('https://res.cloudinary.com/dfp6vcrcp/image/upload/v1779897756/bg_n6yecz.jpg') center/cover no-repeat;
+                url('https://res.cloudinary.com/dfp6vcrcp/image/upload/v1781108314/background_image_pyfmth.png') center/cover no-repeat;
     border-bottom: 3px solid var(--primary-green);
 }
 .hero-content { max-width: 800px; }
