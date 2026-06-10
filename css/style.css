@@ -69,7 +69,7 @@ h1, h2, h3 {
     justify-content: space-between;
     align-items: center;
     padding: 0 5%; 
-    height: 80px; /* FIXED HEIGHT */
+    min-height: 80px; 
     background-color: var(--bg-pure-white);
     border-bottom: 2px solid var(--primary-green);
     position: sticky;
@@ -85,6 +85,8 @@ h1, h2, h3 {
     height: 100%;
     gap: 10px; 
     z-index: 110;
+    flex-shrink: 0; 
+    margin-right: 1.5rem; 
 }
 
 .brand-container .logo { 
@@ -132,8 +134,23 @@ h1, h2, h3 {
     letter-spacing: 0.5px;
 }
 
-.nav-links { list-style: none; display: flex; gap: 2rem; align-items: center; }
-.nav-links a { color: var(--text-dark); text-decoration: none; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; transition: color 0.3s; }
+.nav-links { 
+    list-style: none; 
+    display: flex; 
+    gap: 1.5rem; 
+    align-items: center; 
+}
+
+.nav-links a { 
+    color: var(--text-dark); 
+    text-decoration: none; 
+    font-size: 0.9rem; 
+    font-weight: 600; 
+    text-transform: uppercase; 
+    transition: color 0.3s; 
+    white-space: nowrap; 
+}
+
 .nav-links a:hover { color: var(--primary-green); }
 
 /* --- Social Media Icons in Navbar --- */
@@ -163,7 +180,7 @@ h1, h2, h3 {
     flex-direction: column;
     cursor: pointer;
     gap: 5px;
-    margin-left: auto; /* Ensures it pushes to the far right on mobile */
+    margin-left: auto;
 }
 .hamburger span {
     width: 25px;
@@ -193,9 +210,49 @@ h1, h2, h3 {
     color: white !important;
     padding: 8px 18px;
     border-radius: 4px;
+    white-space: nowrap; 
+    text-align: center;
 }
 
-/* WhatsApp Outline Button styling (Product Cards) */
+/* Dynamic Product Action Buttons */
+.product-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 1rem;
+}
+
+.btn-view-details {
+    display: block;
+    width: 100%;
+    background-color: var(--bg-pure-white);
+    color: var(--primary-green);
+    border: 2px solid var(--primary-green);
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.btn-view-details:hover {
+    background-color: var(--primary-green);
+    color: white;
+}
+
+.product-title-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.product-title-link:hover h3 {
+    color: var(--primary-green);
+}
+
 .btn-wa {
     display: inline-flex;
     align-items: center;
@@ -208,9 +265,9 @@ h1, h2, h3 {
     border-radius: 4px;
     font-weight: 600;
     font-size: 0.9rem;
-    margin-top: 1rem;
     transition: background-color 0.3s;
     width: 100%;
+    margin-top: 0; /* Reset margin since we use flex gap now */
 }
 .btn-wa:hover { background-color: #1ebe57; }
 .btn-wa svg {
@@ -308,7 +365,7 @@ h1, h2, h3 {
     flex-direction: column;
     justify-content: space-between;
 }
-.spice-info h3 { color: var(--title-blue); font-size: 1.4rem; margin-bottom: 0.75rem; }
+.spice-info h3 { color: var(--title-blue); font-size: 1.4rem; margin-bottom: 0.75rem; transition: color 0.2s;}
 
 /* Certifications Section */
 .cert-section { padding: 6rem 5%; background-color: #f4fbf4; border-top: 1px solid #e0ebe0; }
@@ -334,7 +391,7 @@ footer .logo { display: flex; justify-content: center; margin-bottom: 1.5rem; te
 footer .logo img { 
     height: 90px; 
     width: 90px;
-    border-radius: 50%; /* Keeps footer logo perfectly round too */
+    border-radius: 50%;
     background-color: var(--bg-pure-white);
     padding: 6px;
     object-fit: contain;
@@ -411,28 +468,180 @@ footer .footer-credit a {
 }
 
 /* ========================================= */
-/* MOBILE OPTIMIZATION MEDIA QUERIES         */
+/* DROPDOWN NAVIGATION MENU STYLING          */
 /* ========================================= */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown .dropbtn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    white-space: nowrap; 
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--bg-pure-white);
+    min-width: 240px;
+    box-shadow: 0px 10px 20px 0px rgba(0,0,0,0.1);
+    z-index: 200;
+    border-radius: 4px;
+    top: 100%;
+    left: 0;
+    border-top: 3px solid var(--primary-green);
+    padding: 0.5rem 0;
+}
+
+.dropdown-content a {
+    color: var(--text-dark);
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    text-transform: none; 
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s, color 0.2s;
+    white-space: normal; 
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--light-green);
+    color: var(--primary-green);
+}
+
+/* Hover support for Desktop */
+@media (min-width: 769px) {
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+}
+
+/* ========================================= */
+/* PRODUCT DETAILS PAGE SPECIFIC STYLES      */
+/* ========================================= */
+.product-page-hero {
+    padding: 8rem 5% 4rem;
+    background-color: #f4fbf4;
+    border-bottom: 1px solid var(--border-green);
+    text-align: center;
+}
+.product-page-hero h1 {
+    font-size: 3rem;
+    color: var(--title-blue);
+    margin-bottom: 1rem;
+}
+.product-content {
+    padding: 4rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+}
+.specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2.5rem;
+    background: var(--bg-pure-white);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+.specs-table h3 {
+    padding: 15px;
+    background-color: var(--primary-green);
+    color: white;
+    margin: 0;
+    font-size: 1.2rem;
+}
+.specs-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.specs-table th, .specs-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.specs-table th {
+    background-color: #f1f8f1;
+    color: var(--text-dark);
+    font-weight: 600;
+    width: 40%;
+}
+.product-sidebar {
+    background: var(--bg-pure-white);
+    padding: 2rem;
+    border: 1px solid var(--border-green);
+    border-radius: 8px;
+    height: fit-content;
+}
+.product-sidebar h3 {
+    color: var(--title-blue);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--primary-green);
+    padding-bottom: 0.5rem;
+}
+.product-sidebar p {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+.product-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+.product-sidebar ul li {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+    font-size: 0.95rem;
+}
+.product-sidebar ul li::before {
+    content: "✓";
+    color: var(--primary-green);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+/* ======================================================= */
+/* RESPONSIVE OPTIMIZATION MEDIA QUERIES (FIXED ALIGNMENT) */
+/* ======================================================= */
+
+@media (max-width: 1150px) {
+    .nav-links { gap: 1rem; }
+    .nav-links a { font-size: 0.8rem; }
+    
+    .brand-container .logo { width: 85px; }
+    .brand-container .logo img { height: 95px; width: 95px; top: 10px; }
+    
+    .brand-text .company-name { font-size: 1.5rem; }
+    
+    .nav-socials { gap: 10px; padding-left: 10px; }
+    .btn-nav { padding: 8px 12px; }
+}
+
 @media (max-width: 900px) {
-    .nav-links { gap: 1.5rem; }
+    .product-content {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {
-    /* Navbar specific mobile adjustments */
-    .navbar {
-        padding: 0 20px; /* Gives nice spacing on the edges */
-    }
+    .navbar { padding: 0 20px; }
     
-    /* Shrink the brand area perfectly on mobile */
-    .brand-container { gap: 10px; }
+    .brand-container { gap: 10px; margin-right: 0; }
     .brand-container .logo { width: 75px; }
     
-    .brand-container .logo img {
-        height: 75px;
-        width: 75px;
-        top: 12px; 
-        padding: 4px;
-    }
+    .brand-container .logo img { height: 75px; width: 75px; top: 12px; padding: 4px; }
 
     .brand-text .company-name { font-size: 1.3rem; }
     .brand-text .tagline { font-size: 0.55rem; letter-spacing: 0px; }
@@ -441,7 +650,7 @@ footer .footer-credit a {
     .hamburger { display: flex; }
     .nav-links {
         position: absolute;
-        top: 100%; /* Attaches directly below the fixed 80px nav */
+        top: 100%; 
         left: 0;
         width: 100%;
         background-color: var(--bg-pure-white);
@@ -452,12 +661,29 @@ footer .footer-credit a {
         border-top: 1px solid #eee;
         display: none; 
     }
-    .nav-links.active {
-        display: flex; 
-    }
-    .nav-links li { margin-bottom: 1rem; }
+    .nav-links.active { display: flex; }
+    .nav-links li { margin-bottom: 1rem; width: 100%; text-align: center; }
     
-    /* Center the socials on mobile */
+    /* MOBILE DROPDOWN (Controlled by JS Toggle) */
+    .dropdown-content {
+        position: static;
+        box-shadow: none;
+        border: none;
+        min-width: 100%;
+        background-color: #f9f9f9;
+        margin-top: 10px;
+        display: none; /* hidden by default */
+    }
+    .dropdown.active .dropdown-content {
+        display: block; /* reveals on mobile touch */
+    }
+    
+    .dropdown .dropbtn {
+        justify-content: center;
+    }
+    
+    .dropdown-content a { padding: 15px; }
+
     .nav-socials {
         border-left: none;
         border-top: 1px solid #eee;
@@ -469,33 +695,19 @@ footer .footer-credit a {
         justify-content: center;
     }
 
-    .btn-nav { width: 200px; text-align: center; }
+    .btn-nav { width: 200px; display: inline-block; margin: 0 auto; }
 
-    /* Hero Section Mobile */
     .hero { padding: 6rem 5%; }
     .hero h1 { font-size: 2.8rem; }
     .hero p { font-size: 1rem; }
 
-    /* Sections Mobile */
     .section-title { font-size: 2rem; }
     .info-section, .portfolio-section, .cert-section, .contact-section { padding: 4rem 5%; }
     .input-group { flex-direction: column; gap: 1.25rem; }
-    
-    /* Highlight Bar */
     .highlight-bar { flex-direction: column; text-align: center; }
 
-    /* Make floating WA button slightly smaller on mobile screens */
-    .floating-wa {
-        bottom: 20px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-    }
-    
-    .floating-wa svg {
-        width: 30px;
-        height: 30px;
-    }
+    .floating-wa { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+    .floating-wa svg { width: 30px; height: 30px; }
 }
 
 @media (max-width: 480px) {
@@ -508,10 +720,7 @@ footer .footer-credit a {
         margin: 0.25rem 0;
     }
 }
-.cert-link {
-    text-decoration: none;
-    color: inherit;
-}
+.cert-link { text-decoration: none; color: inherit; }
 
 /* Certificate modal styles */
 .cert-modal { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 2000; }
@@ -541,7 +750,7 @@ footer .footer-credit a {
 }
 
 .form-actions button {
-    flex: 1; /* Makes both buttons take up equal half widths */
+    flex: 1; 
     padding: 14px 20px;
     font-size: 0.95rem;
     font-weight: 600;
@@ -556,26 +765,12 @@ footer .footer-credit a {
     transition: all 0.3s ease;
 }
 
-.btn-wa-submit {
-    background-color: #25D366;
-    color: white;
-}
-.btn-wa-submit:hover {
-    background-color: #1ebe57;
-}
+.btn-wa-submit { background-color: #25D366; color: white; }
+.btn-wa-submit:hover { background-color: #1ebe57; }
 
-.btn-email-submit {
-    background-color: var(--title-blue); 
-    color: white;
-}
-.btn-email-submit:hover {
-    background-color: #08306b;
-}
+.btn-email-submit { background-color: var(--title-blue); color: white; }
+.btn-email-submit:hover { background-color: #08306b; }
 
-/* Make buttons stack on smaller mobile screens */
 @media (max-width: 768px) {
-    .form-actions {
-        flex-direction: column;
-        gap: 10px;
-    }
+    .form-actions { flex-direction: column; gap: 10px; }
 }

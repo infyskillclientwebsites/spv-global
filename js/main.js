@@ -1,7 +1,7 @@
 // Mobile Hamburger Menu Logic
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
-const navItems = document.querySelectorAll('.nav-links a');
+const navItems = document.querySelectorAll('.nav-links a:not(.dropbtn)');
 
 if (hamburger) {
     hamburger.addEventListener('click', () => {
@@ -9,24 +9,40 @@ if (hamburger) {
     });
 }
 
-// Close mobile menu when a link is clicked
+// Close mobile menu when a standard link is clicked
 navItems.forEach(item => {
     item.addEventListener('click', () => {
         if (navLinks.classList.contains('active')) {
             navLinks.classList.remove('active');
+            
+            // Auto-collapse dropdown if it was open
+            const dropdownParent = document.getElementById('dropdown-parent');
+            if(dropdownParent) dropdownParent.classList.remove('active');
         }
     });
 });
+
+// Mobile Dropdown Expand Logic
+const mobileDropdownToggle = document.getElementById('mobile-dropdown-toggle');
+const dropdownParent = document.getElementById('dropdown-parent');
+
+if (mobileDropdownToggle && dropdownParent) {
+    mobileDropdownToggle.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            e.preventDefault(); // Prevents page jumping on mobile
+            dropdownParent.classList.toggle('active');
+        }
+    });
+}
 
 // Dual Form Submission Logic (WhatsApp & Email)
 const quoteForm = document.getElementById('quote-form');
 const btnWhatsapp = document.getElementById('btn-whatsapp');
 const btnEmail = document.getElementById('btn-email');
 
-// Helper function to validate and extract form data
 function getFormData() {
     if (!quoteForm.checkValidity()) {
-        quoteForm.reportValidity(); // Triggers browser's native "Please fill out this field" UI
+        quoteForm.reportValidity(); 
         return null;
     }
     
@@ -42,9 +58,9 @@ function getFormData() {
 if (btnWhatsapp) {
     btnWhatsapp.addEventListener('click', function() {
         const data = getFormData();
-        if (!data) return; // Stop if validation failed
+        if (!data) return; 
 
-        const phoneNumber = "919384011239"; // Your WhatsApp number
+        const phoneNumber = "919384011239"; 
         const message = `*New Bulk Wholesale Inquiry*\n\n*Name:* ${data.name}\n*Email:* ${data.email}\n*Company & Target Country:* ${data.company}\n*Requirements:* ${data.requirements}`;
         
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
@@ -56,24 +72,21 @@ if (btnWhatsapp) {
 if (btnEmail) {
     btnEmail.addEventListener('click', function() {
         const data = getFormData();
-        if (!data) return; // Stop if validation failed
+        if (!data) return; 
 
-        const targetEmail = "exim@spvexports.com"; // Your receiving email
+        const targetEmail = "exim@spvexports.com"; 
         const subject = `Bulk Wholesale Inquiry from ${data.name} (${data.company})`;
         
-        // Build a plain-text body for web clients and a URL-encoded body for mailto
         const bodyPlain = `New Bulk Wholesale Inquiry\n\nName: ${data.name}\nEmail: ${data.email}\nCompany & Target Country: ${data.company}\n\nRequirements:\n${data.requirements}`;
 
         const mailtoBody = encodeURIComponent(bodyPlain);
         const mailtoUrl = `mailto:${targetEmail}?subject=${encodeURIComponent(subject)}&body=${mailtoBody}`;
 
-        // Prefer opening Gmail web compose when on Windows; otherwise fallback to mailto
         const isWindows = navigator.userAgent && navigator.userAgent.includes('Windows');
         if (isWindows) {
             const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(targetEmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyPlain)}`;
             window.open(gmailUrl, '_blank');
         } else {
-            // This will launch the user's default email client (Outlook, Apple Mail, etc.)
             window.location.href = mailtoUrl;
         }
     });
@@ -89,7 +102,7 @@ if (btnEmail) {
     const certLoading = document.getElementById('cert-loading');
     const certTitle = document.getElementById('cert-modal-title');
 
-    if (!certModal || !certPreviewList) return; // nothing to do on pages without modal
+    if (!certModal || !certPreviewList) return;
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.worker.min.js';
 
