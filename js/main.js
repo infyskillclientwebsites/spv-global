@@ -74,7 +74,7 @@ if (btnEmail) {
         const data = getFormData();
         if (!data) return; 
 
-        const targetEmail = "exim@spvexports.com"; 
+        const targetEmail = "info@spvexport.com"; 
         const subject = `Bulk Wholesale Inquiry from ${data.name} (${data.company})`;
         
         const bodyPlain = `New Bulk Wholesale Inquiry\n\nName: ${data.name}\nEmail: ${data.email}\nCompany & Target Country: ${data.company}\n\nRequirements:\n${data.requirements}`;
