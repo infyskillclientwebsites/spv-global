@@ -212,6 +212,11 @@ h1, h2, h3 {
     border-radius: 4px;
     white-space: nowrap; 
     text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+.btn-nav:hover {
+    background-color: #388E3C;
+    transform: translateY(-2px);
 }
 
 /* Dynamic Product Action Buttons */
@@ -630,22 +635,40 @@ footer .footer-credit a {
 }
 
 /* ======================================================= */
-/* RESPONSIVE OPTIMIZATION MEDIA QUERIES (FIXED ALIGNMENT) */
+/* RESPONSIVE OPTIMIZATION MEDIA QUERIES (NAVBAR FIXED)    */
 /* ======================================================= */
 
-@media (max-width: 1150px) {
+/* Large screens scaling to prevent overlap */
+@media (max-width: 1300px) {
     .nav-links { gap: 1rem; }
-    .nav-links a { font-size: 0.8rem; }
+    .nav-links a { font-size: 0.85rem; }
+    .brand-text .company-name { font-size: 1.5rem; }
+}
+
+@media (max-width: 1150px) {
+    .nav-links { gap: 0.75rem; }
+    .nav-links a { font-size: 0.75rem; }
     
-    .brand-container .logo { width: 85px; }
+    .brand-container .logo { width: 80px; }
     
     /* Lifted Logo for mid-screens */
-    .brand-container .logo img { height: 95px; width: 95px; top: -15px; }
+    .brand-container .logo img { height: 90px; width: 90px; top: -10px; }
     
-    .brand-text .company-name { font-size: 1.5rem; }
+    .brand-text .company-name { font-size: 1.3rem; }
     
-    .nav-socials { gap: 10px; padding-left: 10px; }
-    .btn-nav { padding: 8px 12px; }
+    .nav-socials { gap: 8px; padding-left: 8px; }
+    .btn-nav { padding: 8px 10px; font-size: 0.75rem; }
+}
+
+/* Tablets Landscape - Squeeze more to save Get Quote Button */
+@media (max-width: 992px) {
+    .nav-links { gap: 0.5rem; }
+    .brand-text .company-name { font-size: 1.1rem; }
+    .brand-text .tagline { font-size: 0.65rem; }
+    
+    /* Hide socials temporarily on small tablets to ensure Get Quote button visibility */
+    .nav-socials { display: none; }
+    .btn-nav { padding: 6px 8px; font-size: 0.7rem; }
 }
 
 @media (max-width: 900px) {
@@ -705,6 +728,7 @@ footer .footer-credit a {
     .dropdown-content a { padding: 15px; }
 
     .nav-socials {
+        display: flex; /* Bring socials back inside hamburger menu */
         border-left: none;
         border-top: 1px solid #eee;
         padding-left: 0;
@@ -715,7 +739,15 @@ footer .footer-credit a {
         justify-content: center;
     }
 
-    .btn-nav { width: 200px; display: inline-block; margin: 0 auto; }
+    .btn-nav { 
+        width: 80%; 
+        max-width: 250px;
+        display: flex;
+        justify-content: center;
+        margin: 10px auto; 
+        padding: 12px;
+        font-size: 0.95rem;
+    }
 
     .hero { padding: 6rem 5%; }
     .hero h1 { font-size: 2.8rem; }
